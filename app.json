@@ -1,0 +1,15 @@
+{
+  "name":"mis_proyectos_ricardo",
+  "scripts":{},
+  "env":{
+    "HEROKU_POSTGRESQL_GOLD_URL":{
+      "required":true
+    },
+    "NODE_ENV":{
+      "required":true
+    }
+  },
+  "addons":[
+    "heroku-postgresql"
+  ]
+}
