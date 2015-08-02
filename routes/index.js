@@ -10,6 +10,10 @@ router.get('/', function(req, res) {
 });
 
 
+// Autoload de comandos con :quizId
+//Solo se ejecuta en caso de que en los parametros de la ruta exista el parametro 'quizId'
+router.param('quizId',quizController.load);
+
 router.get('/quizes',quizController.index);
 router.get('/quizes/:quizId(\\d+)',quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer',quizController.answer);
