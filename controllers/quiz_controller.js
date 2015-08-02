@@ -28,9 +28,17 @@ exports.answer = function(req,res) {
 
 //GET /quizes
 exports.index = function(req,res) {
-	models.Quiz.findAll().then(function(quizes) {
-		res.render('quizes/index.ejs', { quizes: quizes});
-	}).catch(function(error) { next(error);})
+	//console.log(req.query.search);
+	if(req.query.search){
+		var searchString = '%' + req.query.search.replace(' ', '%') + '%';
+		models.Quiz.findAll({ where: ["pregunta like ?", searchString] }).then(function(quizes) {
+			res.render('quizes/index', {quizes: quizes});
+		}).catch(function(error) { next(error);})
+	}else{
+		models.Quiz.findAll().then(function(quizes) {
+			res.render('quizes/index', { quizes: quizes});
+		}).catch(function(error) { next(error);})
+	}
 };
 
 //2

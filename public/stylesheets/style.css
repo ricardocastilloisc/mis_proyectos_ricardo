@@ -29,3 +29,5 @@ footer {
 nav span {
 	margin: 0px 10px 0px 0px;
 }
+
+div#busqueda					{ border: 5px ridge #999; margin: 0px 0px 10px 0px; text-align:center;}
