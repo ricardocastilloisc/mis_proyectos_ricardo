@@ -36,7 +36,7 @@ exports.index = function(req,res) {
 		}).catch(function(error) { next(error);})
 	}else{
 		models.Quiz.findAll().then(function(quizes) {
-		res.render('quizes/index', { quizes: quizes, errors: []});
+			res.render('quizes/index', { quizes: quizes, errors: []});
 		});
 	}
 };
@@ -50,48 +50,62 @@ exports.new = function(req,res) {
 	res.render('quizes/new', {quiz: quiz, errors: []});
 };
 
-/**
-
 //POST /quizes/create
-exports.create = function(req,res) {
+exports.create = function(req, res) {
 	var quiz = models.Quiz.build( req.body.quiz );
 	
-	//Guarda en BD los campos pregunta y respuesta de quiz
-	quiz.save({fields: ["pregunta","respuesta"]}).then(function(){
-		res.redirect('/quizes');
-	}) //Redireccion HTTP (URL nativo) lista de preguntas
+	quiz
+	.validate()
+	.then(
+		function(err){
+			if (err) {
+				res.render('quizes/new', {quiz: quiz, errors: err.errors});
+			} else {
+				quiz // save: guarda en DB campos pregunta y respuesta de quiz
+				.save({fields: ["pregunta", "respuesta"]})
+				.then( function(){ res.redirect('/quizes');}) 
+			}      // res.redirect: Redirección HTTP a lista de preguntas
+		}
+	).catch(function(error){next(error);});
 };
 
-*/
-
-/**
-//GET /quizes/question
-exports.question = function(req,res) {
-	models.Quiz.findAll().success(function(quiz) {
-		res.render('quizes/question', {pregunta: quiz[0].pregunta});
-	})
-};
-*/
-/*
-//GET /quizes/question
-exports.question = function(req, res)
-{
-	res.render('quizes/question',{pregunta: 'Capital de Italia'});
-};
-
-//GET /quizes/question
-exports.answer = function(req, res)
-{
-	if(req.query.respuesta == 'Roma')
-	{
-		res.render('quizes/answer',{respuesta: 'Correcto'});
-	}else
-	{
-		res.render('quizes/answer',{respuesta: 'Incorrecto'});
-	}
+//GET /quizes/:id/edit
+exports.edit = function(req,res) {
+	var quiz = req.quiz; //autoload de instancia de quiz
 	
+	res.render('quizes/edit', {quiz: quiz, errors: []});
 };
-*/
+
+//PUT /quizes/:id
+exports.update = function(req,res) {
+	req.quiz.pregunta = req.body.quiz.pregunta;
+	req.quiz.respuesta = req.body.quiz.respuesta;
+	
+	
+	req.quiz
+	.validate()
+	.then(
+		function(err){
+			if(err){
+				res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
+			} else {
+				req.quiz
+				//save: guarda campos pregunta y respuesta en ls BD
+				.save( {fields: ["pregunta","respuesta"]})
+				.then( function(){ res.redirect('/quizes');});
+			} //Redireccion HTTP a lista de preguntas (URL relativo)
+		}
+	);
+};
+
+//DELETE /quizes/:id
+exports.destroy = function(req,res) {
+	req.quiz.destroy().then( function() {
+		res.redirect('/quizes');
+	}).catch(function(error){next(error)});
+};
+
+
 //GET /quizes/autor
 exports.autor = function(req, res)
 {

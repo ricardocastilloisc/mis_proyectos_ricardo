@@ -48,19 +48,3 @@ sequelize.sync().then(function() {
 		};
 	});
 });
-
-//2
-/**
-//sequelize.sync() crea e inicializa tabla de preguntas en DB
-sequelize.sync().success(function() {
-	//success(..)ejecuta el manejador una vez creada la tabla
-	Quiz.count().success(function (count){
-		if(count === 0) { // la tabla se inicializa solo si está vacía
-			Quiz.create({ 	pregunta: 'Capital de Italia',
-							respuesta: 'Roma'
-						})
-			.success(function(){console.log('Base de datos inicializada')});
-		};
-	});
-});
-*/
