@@ -1,5 +1,6 @@
 var models = require('../models/models.js');
 
+
 exports.load = function(req,res,next,quizId) {
 	models.Quiz.find(quizId).then(
 		function(quiz) {
@@ -109,3 +110,4 @@ exports.destroy = function(req,res) {
 exports.author = function(req,res){
 	res.render('quizes/author', {errors: []});
 }
+
