@@ -106,9 +106,8 @@ exports.destroy = function(req,res) {
 };
 
 
-
 //GET /quizes/author
 exports.author = function(req,res){
-	res.render('quizes/autor', {errors: []});
+	res.render('quizes/author', {errors: []});
 }
 

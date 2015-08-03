@@ -50,5 +50,3 @@ sequelize.sync().then(function() {
 		};
 	});
 });
-
-
